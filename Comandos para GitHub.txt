@@ -1,0 +1,72 @@
+*********************************************************
+Para hacer commits o guardar las modificaciones en GitHub
+*********************************************************
+
+---------------------
+1. Iniciaiza Git
+---------------------
+git init
+
+---------------------
+2. Conecta con GitHub
+---------------------
+git remote add origin https://github.com/simcap1212-oss/simcap.git
+
+---------------------
+3. Realizar commit
+---------------------
+git add .
+git commit -m "Versión inicial del sitio SIMCAP"
+git push -u origin master
+
+
+----------------------
+4. Para saber el estado o si hubieron cambios
+----------------------
+git status
+
+
+***********************************
+Crear nueva rama para hacer cambios
+***********************************
+Vamos a crear una nueva rama llamada desarrollo:
+git checkout -b desarrollo 
+
+--------------------
+Para saber las ramas que tengo creadas
+git branch
+
+-----------------------
+Subir una nueva rama a GitHub
+git push -u origin desarrollo
+
+
+🔁 Flujo de trabajo recomendado a partir de ahora
+🛠️ Trabajar siempre en desarrollo
+git checkout desarrollo
+
+
+Haces cambios → commit → push
+
+🔒 Mantener master como backup
+
+❌ No trabajes directamente en master
+✅ Solo actualízala cuando estés seguro
+
+******************************
+Cuando algo funcione perfecto:
+******************************
+
+git checkout master
+git merge desarrollo
+git push
+
+🧯 Si algo sale mal (tranquilo, no pasa nada)
+
+Si rompes todo en desarrollo:
+
+git checkout master
+git checkout -b desarrollo_nuevo
+
+
+Backup intacto 😎
