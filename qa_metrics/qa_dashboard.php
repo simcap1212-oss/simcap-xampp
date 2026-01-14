@@ -98,8 +98,8 @@ h2 {
 }
 .progress-bar {
     height: 20px;
-    width: <?= $porcentajeAlertas ?>%;
-    background: <?= $color ?>;
+    width: 0;
+    background: #ccc;
     transition: width 1s ease;
 }
 
@@ -114,8 +114,7 @@ h2 {
 .alert-level {
     font-size: 22px;
     font-weight: bold;
-    color: <?= $color ?>;
-    margin-top: 10px;
+
 }
 
 .footer {
@@ -155,15 +154,17 @@ h2 {
 
 <!-- KPI CRÍTICO -->
 <div class="alert-box">
-    <h3>🔍 Porcentaje de consumos con alerta (>1000 L)</h3>
+    <h3>🔍 Porcentaje de consumos con alerta (>900 L)</h3>
 
     <div class="progress-box">
-        <div class="progress-bar"></div>
+        <div class="progress-bar"
+            style="width: <?= $porcentajeAlertas ?>%; background: <?= $color ?>;">
+        </div>
     </div>
 
     <p><strong><?= $porcentajeAlertas ?>%</strong> de los consumos superan el umbral permitido.</p>
 
-    <div class="alert-level">
+    <div class="alert-level" style="color: <?=  $color ?>;">
         Nivel de riesgo del sistema: <?= $nivel ?>
     </div>
 </div>
@@ -187,7 +188,9 @@ h2 {
 
     <p><strong>⚙️ Eficiencia del sistema</strong></p>
     <div class="progress-box">
-        <div class="progress-bar" style="width: <?= $eficienciaSistema ?>%; background:#2ecc71;"></div>
+        <div class="progress-bar"
+            style="width: <?= $porcentajeNormales ?>%; background:#3498db;">
+        </div>
     </div>
     <p><?= $eficienciaSistema ?>% de los consumos están dentro de los límites permitidos</p>
 

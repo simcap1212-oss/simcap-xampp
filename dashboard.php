@@ -5,6 +5,11 @@ requireLogin();
 $period = $_GET['period'] ?? 'daily';
 $selected_day = $_GET['day'] ?? date('Y-m-d');
 $selected_month = $_GET['month'] ?? date('Y-m');
+
+/* NUEVO (solo para semanal) */
+$week_start = $_GET['week_start'] ?? date('Y-m-d', strtotime('-6 days'));
+$week_end   = $_GET['week_end'] ?? date('Y-m-d');
+
 $pdo = getDB();
 $user_id = $_SESSION['user_id'];
 $username = $_SESSION['username']; 
@@ -17,11 +22,12 @@ switch ($period) {
         $stmt = $pdo->prepare("
             SELECT DATE(timestamp) as date, SUM(volume) as total
             FROM water_usage
-            WHERE user_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            WHERE user_id = ?
+              AND DATE(timestamp) BETWEEN ? AND ?
             GROUP BY DATE(timestamp)
             ORDER BY DATE(timestamp) ASC
         ");
-        $stmt->execute([$user_id]);
+        $stmt->execute([$user_id, $week_start, $week_end]);
         break;
 
     case 'monthly':
@@ -189,6 +195,14 @@ if ($period == 'daily') {
         <?php if($period=='daily'): ?>
             <label>Selecciona un día:</label>
             <input type="date" name="day" value="<?= htmlspecialchars($selected_day) ?>">
+
+        <?php elseif($period=='weekly'): ?>
+            <label>Desde:</label>
+            <input type="date" name="week_start" value="<?= htmlspecialchars($week_start) ?>">
+
+            <label>Hasta:</label>
+            <input type="date" name="week_end" value="<?= htmlspecialchars($week_end) ?>">
+
         <?php elseif($period=='monthly'): ?>
             <label>Selecciona un mes:</label>
             <input type="month" name="month" value="<?= htmlspecialchars($selected_month) ?>">
@@ -197,14 +211,12 @@ if ($period == 'daily') {
         <button type="submit">Aplicar</button>
     </form>
 
-    <!-- Promedio -->
     <p style="margin-top:20px;">
         Promedio diario: <strong><?= $promedio_diario ?> litros</strong>
     </p>
 
-    <!-- NUEVO: Consumo diario y costos -->
     <?php if ($period == 'daily'): ?>
-        <p>Consumo del día seleccionado: 
+        <p>Consumo del día seleccionado:
             <strong><?= $consumo_diario ?> litros</strong>
         </p>
 
@@ -224,7 +236,6 @@ if ($period == 'daily') {
         <a href="logout.php" style="float:right; color:white;">Cerrar Sesión</a>
     </div>
 
-    <!-- Alertas -->
     <?php if (!empty($alertas)): ?>
         <div class="alert-box">
             <h3>⚠️ Alertas de Consumo Excesivo</h3>
@@ -236,10 +247,8 @@ if ($period == 'daily') {
         </div>
     <?php endif; ?>
 
-    <!-- Gráfica -->
     <canvas id="consumoChart" width="900" height="400"></canvas>
 
-    <!-- Tabla detallada -->
     <?php if (!empty($data)): ?>
         <table class="usage-table">
             <tr>
@@ -248,7 +257,7 @@ if ($period == 'daily') {
                 <th>Costo (USD)</th>
             </tr>
 
-            <?php foreach ($data as $row): 
+            <?php foreach ($data as $row):
                 $costo_fila = round(($row['total'] / 1000) * $costo_m3, 4);
             ?>
             <tr <?= ((float)$row['total'] > $ALERTA_CONSUMO) ? "class='alert-row'" : "" ?>>
@@ -264,13 +273,12 @@ if ($period == 'daily') {
 </div>
 
 <script>
-// Colores según alerta
 const barColors = <?= json_encode(array_map(function($v) use ($ALERTA_CONSUMO) {
     return $v > $ALERTA_CONSUMO ? 'rgba(244, 67, 54, 0.7)' : 'rgba(2, 136, 209, 0.6)';
 }, $volumes)) ?>;
 
 const ctx = document.getElementById('consumoChart').getContext('2d');
-const consumoChart = new Chart(ctx, {
+new Chart(ctx, {
     type: 'bar',
     data: {
         labels: <?= json_encode($labels) ?>,
@@ -285,12 +293,11 @@ const consumoChart = new Chart(ctx, {
     options: {
         responsive: true,
         plugins: {
-            legend: { display: false },
-            tooltip: { mode: 'index', intersect: false }
+            legend: { display: false }
         },
         scales: {
-            y: { beginAtZero: true, title: { display: true, text: 'Litros' } },
-            x: { title: { display: true, text: 'Fecha' } }
+            y: { beginAtZero: true },
+            x: { }
         }
     }
 });
