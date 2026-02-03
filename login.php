@@ -27,57 +27,114 @@ if (isset($_GET['error'])) {
 <meta charset="UTF-8">
 <title>SIMCAP - Iniciar Sesión</title>
 <style>
-/* (mantengo los estilos que ya tenías) */
+/* ===========================
+   ESTILO FORMAL – SIMCAP
+   =========================== */
+
 body {
-    font-family: Arial, sans-serif;
-    background: #e3f2fd;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #2c2c2c;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 60px;
+    margin: 0;
 }
+
+/* Contenedor principal */
 .container {
-    width: 350px;
+    width: 360px;
     margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-}
-input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
+    background: #ffffff;
+    padding: 32px 28px;
     border-radius: 6px;
-    border: 1px solid #90caf9;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid #dcdcdc;
 }
+
+/* Título */
+.container h2 {
+    margin-bottom: 22px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f3c88;
+    letter-spacing: 0.5px;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 11px 12px;
+    margin: 12px 0;
+    border-radius: 4px;
+    border: 1px solid #c5c8ce;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1f3c88;
+    box-shadow: 0 0 0 2px rgba(31, 60, 136, 0.15);
+}
+
+/* Botón */
 button {
-    background: #1565c0;
-    color: white;
-    padding: 10px 20px;
+    width: 100%;
+    margin-top: 18px;
+    background: #1f3c88;
+    color: #ffffff;
+    padding: 12px 0;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
+    letter-spacing: 0.4px;
+    transition: background 0.2s, transform 0.1s;
 }
+
 button:hover {
-    background: #0d47a1;
+    background: #162e6b;
 }
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Mensajes de error */
+.mensaje {
+    color: #b00020;
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+/* Mensajes de éxito */
+.success {
+    color: #155724;
+    background: #e6f4ea;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+/* Enlace de registro */
 a {
     display: block;
-    margin-top: 15px;
-    color: #1565c0;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #1f3c88;
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
-}
-.mensaje {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-.success {
-    color: green;
-    font-weight: bold;
-    margin-bottom: 12px;
 }
 </style>
 </head>
